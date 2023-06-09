@@ -1,7 +1,6 @@
 'use strict';
 
 const express = require('express');
-const asyncHandler = require('express-async-handler');
 
 const booksController = require('../controllers/books.controller');
 const { validate } = require('../middleware/validate');
@@ -16,7 +15,7 @@ const { listBooksQuerySchema } = require('../schemas/book.schema');
  */
 const router = express.Router();
 
-router.get('/', validate(listBooksQuerySchema, 'query'), asyncHandler(booksController.listBooks));
-router.get('/:id', validateObjectId(), asyncHandler(booksController.getBookById));
+router.get('/', validate(listBooksQuerySchema, 'query'), booksController.listBooks);
+router.get('/:id', validateObjectId(), booksController.getBookById);
 
 module.exports = router;

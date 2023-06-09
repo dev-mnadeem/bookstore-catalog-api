@@ -1,7 +1,6 @@
 'use strict';
 
 const express = require('express');
-const asyncHandler = require('express-async-handler');
 
 const usersController = require('../controllers/users.controller');
 const { validate } = require('../middleware/validate');
@@ -16,6 +15,6 @@ const { registerSchema } = require('../schemas/user.schema');
  */
 const router = express.Router();
 
-router.post('/', validate(registerSchema), asyncHandler(usersController.register));
+router.post('/', validate(registerSchema), usersController.register);
 
 module.exports = router;

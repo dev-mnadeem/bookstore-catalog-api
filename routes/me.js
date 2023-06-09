@@ -1,7 +1,6 @@
 'use strict';
 
 const express = require('express');
-const asyncHandler = require('express-async-handler');
 
 const booksController = require('../controllers/books.controller');
 const usersController = require('../controllers/users.controller');
@@ -26,24 +25,20 @@ const router = express.Router();
 
 router.use(requireAuth);
 
-router.get('/', asyncHandler(usersController.getMe));
-router.put('/', validate(updateProfileSchema), asyncHandler(usersController.updateMe));
-router.delete('/', asyncHandler(usersController.deleteMe));
+router.get('/', usersController.getMe);
+router.put('/', validate(updateProfileSchema), usersController.updateMe);
+router.delete('/', usersController.deleteMe);
 
-router.get(
-  '/books',
-  validate(listMyBooksQuerySchema, 'query'),
-  asyncHandler(booksController.listMyBooks)
-);
-router.post('/books', validate(createBookSchema), asyncHandler(booksController.createMyBook));
-router.get('/books/:id', validateObjectId(), asyncHandler(booksController.getMyBookById));
+router.get('/books', validate(listMyBooksQuerySchema, 'query'), booksController.listMyBooks);
+router.post('/books', validate(createBookSchema), booksController.createMyBook);
+router.get('/books/:id', validateObjectId(), booksController.getMyBookById);
 router.put(
   '/books/:id',
   validateObjectId(),
   validate(updateBookSchema),
-  asyncHandler(booksController.updateMyBook)
+  booksController.updateMyBook
 );
 // DELETE unpublishes: the assignment asks for an unpublish endpoint on DELETE.
-router.delete('/books/:id', validateObjectId(), asyncHandler(booksController.unpublishMyBook));
+router.delete('/books/:id', validateObjectId(), booksController.unpublishMyBook);
 
 module.exports = router;
