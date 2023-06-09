@@ -27,11 +27,11 @@ Content-Type: application/json; charset=utf-8
 {
   "data": [
     {
-      "id": "6ab5abb9d1028e14e462a7b5",
+      "id": "6af0c28979f6e32d6eab988a",
       "title": "Adventures on Kashyyyk",
       "description": "Life among the wroshyr trees, told by one who climbed them.",
       "author": "Lohgarra of Kashyyyk",
-      "authorId": "6ab5abb9d1028e14e462a7b0",
+      "authorId": "6af0c28979f6e32d6eab9885",
       "coverImageUrl": "https://example.test/covers/kashyyyk.png",
       "price": 14.99,
       "currency": "GCS",
@@ -62,11 +62,11 @@ Content-Type: application/xml; charset=utf-8
 <?xml version='1.0' encoding='UTF-8'?>
 <response>
     <data>
-        <id>6ab5abb9d1028e14e462a7b5</id>
+        <id>6af0c28979f6e32d6eab988a</id>
         <title>Adventures on Kashyyyk</title>
         <description>Life among the wroshyr trees, told by one who climbed them.</description>
         <author>Lohgarra of Kashyyyk</author>
-        <authorId>6ab5abb9d1028e14e462a7b0</authorId>
+        <authorId>6af0c28979f6e32d6eab9885</authorId>
         <coverImageUrl>https://example.test/covers/kashyyyk.png</coverImageUrl>
         <price>14.99</price>
         <currency>GCS</currency>
@@ -105,7 +105,12 @@ Content-Type: application/json; charset=utf-8
 {
   "error": {
     "status": 403,
-    "message": "The author \"Darth Vader\" may not publish on Wookie Books"
+    "message": "The author \"Darth Vader\" may not publish on Wookie Books",
+    "details": {
+      "reasons": [
+        "The author \"Darth Vader\" may not publish on Wookie Books"
+      ]
+    }
   }
 }
 ```
