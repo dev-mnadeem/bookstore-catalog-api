@@ -1,0 +1,28 @@
+# dependencies
+node_modules/
+
+# environment
+.env
+.env.*
+!.env.example
+!.env.sample
+
+# build output, caches, logs
+dist/
+build/
+.cache/
+.eslintcache
+*.log
+npm-debug.log*
+tmp/
+
+# test output
+coverage/
+
+# local tooling left in the working copy
+project_venv/
+tests/
+.github/
+
+# OS noise
+.DS_Store
