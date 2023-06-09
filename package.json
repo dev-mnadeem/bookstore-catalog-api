@@ -5,7 +5,7 @@
   "description": "Wookie Books - a self-publishing bookstore REST API (Node + Express + MongoDB).",
   "main": "server.js",
   "engines": {
-    "node": ">=18"
+    "node": ">=22"
   },
   "scripts": {
     "start": "node server.js",
