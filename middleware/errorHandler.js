@@ -22,6 +22,14 @@ function notFoundHandler(req, res, next) {
 function translateError(err) {
   if (err instanceof AppError || err?.expected === true) return err;
 
+  // body-parser has already classified these (malformed JSON, oversized or
+  // mis-encoded body) as the client's fault and marked them safe to expose.
+  if (err?.expose === true && err.status >= 400 && err.status < 500) {
+    const message =
+      err.type === 'entity.parse.failed' ? 'Request body is not valid JSON' : err.message;
+    return new AppError(err.status, message);
+  }
+
   if (err?.code === MONGO_DUPLICATE_KEY) {
     const field = Object.keys(err.keyPattern || err.keyValue || {})[0];
     return AppError.conflict(

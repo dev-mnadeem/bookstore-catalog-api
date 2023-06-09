@@ -125,3 +125,24 @@ describe('GET /api/health', () => {
     expect(response.body.data.status).toBe('ok');
   });
 });
+
+describe('request bodies the parser rejects', () => {
+  it('answers malformed JSON with 400, not 500', async () => {
+    const response = await request(app)
+      .post('/api/auth/login')
+      .set('Content-Type', 'application/json')
+      .send('{"username": "lohgarra",')
+      .expect(400);
+
+    expect(response.body.error).toEqual({ status: 400, message: 'Request body is not valid JSON' });
+  });
+
+  it('answers an oversized body with 413', async () => {
+    const response = await request(app)
+      .post('/api/users')
+      .send({ name: 'x'.repeat(200 * 1024) })
+      .expect(413);
+
+    expect(response.body.error.status).toBe(413);
+  });
+});

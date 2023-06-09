@@ -23,6 +23,25 @@ describe('translateError', () => {
     expect(translated.details).toEqual({ field: 'username' });
   });
 
+  it('keeps the status of a client error the body parser raised', () => {
+    const tooLarge = Object.assign(new Error('request entity too large'), {
+      status: 413,
+      expose: true,
+      type: 'entity.too.large',
+    });
+
+    const translated = translateError(tooLarge);
+
+    expect(translated).toBeInstanceOf(AppError);
+    expect(translated.status).toBe(413);
+  });
+
+  it('does not trust an exposed error that claims to be a server fault', () => {
+    expect(
+      translateError(Object.assign(new Error('boom'), { status: 503, expose: true }))
+    ).toBeNull();
+  });
+
   it('refuses to describe an unexpected fault', () => {
     expect(translateError(new Error('connection string leaked here'))).toBeNull();
   });
