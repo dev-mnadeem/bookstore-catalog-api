@@ -11,8 +11,8 @@ const { config, assertRuntimeConfig } = require('./config/env');
  * JWT_SECRET_KEY is unset — a stack trace out of node_modules instead of a
  * sentence naming the missing variable.
  *
- * The original app also called `app.listen` at module scope, so importing it
- * for any reason — a test, a script — opened a real socket.
+ * Listening happens here rather than in `app.js`, so importing the app (from a
+ * test or a script) never opens a socket.
  */
 async function start() {
   assertRuntimeConfig();

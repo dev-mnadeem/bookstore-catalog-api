@@ -7,9 +7,8 @@ const { config } = require('./env');
 /**
  * Open the shared mongoose connection.
  *
- * `mongoose.connect` returns a promise; the original implementation wrapped a
- * non-awaited call in try/catch, so connection failures escaped as unhandled
- * rejections instead of stopping the process. Awaiting it makes failure visible.
+ * Awaited, so a connection failure rejects `start()` in server.js and stops
+ * the process instead of surfacing later as an unhandled rejection.
  */
 async function connect(url = config.databaseUrl) {
   mongoose.set('strictQuery', false);

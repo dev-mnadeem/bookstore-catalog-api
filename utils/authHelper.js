@@ -24,11 +24,8 @@ function verifyPassword(plainPassword, salt, passwordHash) {
 /**
  * Build the JWT for a user.
  *
- * Only non-sensitive claims are signed. The previous implementation spread a
- * whole mongoose document into the payload, which put the bcrypt password hash
- * and the per-user salt inside a token handed to the client — a JWT payload is
- * base64, not encrypted. The token is also given an expiry; it previously had
- * none and was valid forever.
+ * Only non-sensitive claims are signed: a JWT payload is base64, not
+ * encrypted, so anything in it is readable by whoever holds the token.
  */
 function generateToken(user) {
   const claims = {

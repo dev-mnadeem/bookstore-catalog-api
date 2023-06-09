@@ -1,7 +1,6 @@
 'use strict';
 
 const usersDao = require('../dal/users.dao');
-const AppError = require('../utils/AppError');
 const authHelper = require('../utils/authHelper');
 
 /**
@@ -21,10 +20,4 @@ async function verifyCredentials(username, password) {
   return safeUser;
 }
 
-async function login(username, password) {
-  const user = await verifyCredentials(username, password);
-  if (!user) throw AppError.unauthorized('Invalid login credentials');
-  return { user, token: authHelper.generateToken(user) };
-}
-
-module.exports = { verifyCredentials, login };
+module.exports = { verifyCredentials };

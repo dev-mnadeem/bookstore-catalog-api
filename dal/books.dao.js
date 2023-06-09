@@ -43,10 +43,6 @@ function updateById(bookId, payload) {
   return Book.findByIdAndUpdate(bookId, payload, { new: true, runValidators: true }).lean();
 }
 
-function deleteById(bookId) {
-  return Book.findByIdAndDelete(bookId).lean();
-}
-
 function updateAuthorPseudonym(authorId, authorPseudonym) {
   return Book.updateMany({ author: authorId }, { $set: { authorPseudonym } });
 }
@@ -62,7 +58,6 @@ module.exports = {
   findOne,
   findPublishedByAuthor,
   updateById,
-  deleteById,
   updateAuthorPseudonym,
   deleteByAuthor,
 };

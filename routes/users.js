@@ -10,10 +10,9 @@ const { registerSchema } = require('../schemas/user.schema');
 /**
  * Registration only.
  *
- * The original build exposed GET /api/users (every account, unpaginated) and
- * PUT/DELETE /api/users/:id behind nothing but "some valid JWT" — any signed-in
- * user could rewrite or delete any other account. Self-service now lives on
- * /api/me, where the id comes from the token rather than the URL.
+ * There is deliberately no list, update or delete by id here: self-service
+ * lives on /api/me, where the id comes from the token rather than the URL, so
+ * no signed-in user can name another account.
  */
 const router = express.Router();
 

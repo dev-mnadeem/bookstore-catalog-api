@@ -6,15 +6,9 @@ const AppError = require('../utils/AppError');
 /**
  * Route-level authentication.
  *
- * The original code installed a single global middleware that tried to work out
- * which strategy to apply by string-matching `req.originalUrl` against two hard
- * coded lists, using a regular expression that looked for 21-character ids —
- * MongoDB ObjectIds are 24 hex characters, so that branch never fired. Any
- * route not on the lists silently required a JWT, which is why the public
- * catalogue the assignment asks for was behind authentication.
- *
- * Declaring the requirement on the route it applies to removes the guesswork:
- * a reader can see, from routes/books.js alone, that the catalogue is public.
+ * Each router declares its own requirement instead of one global middleware
+ * guessing from the URL, so a reader can see from routes/books.js alone that
+ * the catalogue is public.
  */
 
 function requireAuth(req, res, next) {

@@ -6,9 +6,8 @@ const { toDecimal } = require('./money');
  * Presenters are the single place that decides what a client is allowed to see.
  *
  * Controllers return presenter output and nothing else, so a field added to a
- * mongoose schema cannot leak into a response by accident — which is how the
- * original code ended up returning password hashes from some paths and not
- * others, depending on which `.select()` string the query happened to use.
+ * mongoose schema cannot leak into a response by accident, whatever `.select()`
+ * the query that loaded it happened to use.
  */
 
 function presentUser(user) {

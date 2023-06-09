@@ -30,9 +30,7 @@ const localStrategy = new LocalStrategy(
 /**
  * The JWT payload is a claim, not a user record. It is re-read from the
  * database on every request so that a token issued before an account was
- * deleted or renamed stops working immediately. The original implementation
- * trusted the token payload as the user object, which meant a deleted account's
- * token stayed valid until it expired — and it never expired.
+ * deleted stops working immediately, rather than when it expires.
  */
 const jwtStrategy = new JwtStrategy(
   {
