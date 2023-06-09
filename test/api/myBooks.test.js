@@ -163,6 +163,7 @@ describe('publishing policy', () => {
       .expect(403);
 
     expect(response.body.error.message).toMatch(/Darth Vader/);
+    expect(response.body.error.details.reasons).toHaveLength(1);
 
     const catalogue = await request(app).get('/api/books').expect(200);
     expect(catalogue.body.data).toHaveLength(0);
@@ -177,6 +178,35 @@ describe('publishing policy', () => {
       .set('Authorization', vader.authHeader)
       .send({ status: 'published' })
       .expect(403);
+  });
+
+  it('stops an author with live listings renaming to a banned pen name', async () => {
+    const author = await registerAndLogin({ authorPseudonym: 'Lohgarra' });
+    await createBook(author.authHeader, { status: 'published' });
+
+    const response = await request(app)
+      .put('/api/me')
+      .set('Authorization', author.authHeader)
+      .send({ authorPseudonym: 'Darth Vader' })
+      .expect(403);
+
+    expect(response.body.error.message).toMatch(/Darth Vader/);
+
+    const catalogue = await request(app).get('/api/books').expect(200);
+    expect(catalogue.body.data[0].author).toBe('Lohgarra');
+    const me = await request(app).get('/api/me').set('Authorization', author.authHeader);
+    expect(me.body.data.authorPseudonym).toBe('Lohgarra');
+  });
+
+  it('lets an author with only drafts take any free pen name', async () => {
+    const author = await registerAndLogin({ authorPseudonym: 'Lohgarra' });
+    await createBook(author.authHeader, { status: 'draft' });
+
+    await request(app)
+      .put('/api/me')
+      .set('Authorization', author.authHeader)
+      .send({ authorPseudonym: 'Darth Vader' })
+      .expect(200);
   });
 
   it('lets everybody else publish', async () => {

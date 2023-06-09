@@ -110,6 +110,16 @@ function assertPublishingAllowed(user, book) {
   }
 }
 
+/**
+ * Re-run the policy over an author's live listings as if they already carried
+ * `user`'s details. Without this, publishing as "Lohgarra" and then renaming
+ * to a banned pen name would put that name on the public catalogue.
+ */
+async function assertListingsAllowedFor(user) {
+  const listed = await booksDao.findPublishedByAuthor(user.id);
+  for (const book of listed) assertPublishingAllowed(user, book);
+}
+
 async function createBook(user, payload) {
   const book = {
     title: payload.title,
@@ -160,6 +170,7 @@ module.exports = {
   createBook,
   updateBook,
   unpublishBook,
+  assertListingsAllowedFor,
   buildSearchFilter,
   SORTS,
 };

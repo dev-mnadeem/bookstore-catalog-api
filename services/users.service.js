@@ -2,6 +2,7 @@
 
 const usersDao = require('../dal/users.dao');
 const booksDao = require('../dal/books.dao');
+const booksService = require('./books.service');
 const AppError = require('../utils/AppError');
 const authHelper = require('../utils/authHelper');
 
@@ -53,6 +54,11 @@ async function updateProfile(userId, changes) {
         field: 'authorPseudonym',
       });
     }
+    await booksService.assertListingsAllowedFor({
+      ...current,
+      id: String(userId),
+      authorPseudonym: changes.authorPseudonym,
+    });
     patch.authorPseudonym = changes.authorPseudonym;
   }
 

@@ -1,6 +1,7 @@
 'use strict';
 
 const Book = require('../models/book.model');
+const { BOOK_STATUSES } = require('../models/bookStatus');
 
 /**
  * Data access for books. Everything that talks to mongoose for the Book
@@ -34,6 +35,10 @@ function findOne(filter) {
   return Book.findOne(filter).lean();
 }
 
+function findPublishedByAuthor(authorId) {
+  return Book.find({ author: authorId, status: BOOK_STATUSES.PUBLISHED }).lean();
+}
+
 function updateById(bookId, payload) {
   return Book.findByIdAndUpdate(bookId, payload, { new: true, runValidators: true }).lean();
 }
@@ -55,6 +60,7 @@ module.exports = {
   findPage,
   findById,
   findOne,
+  findPublishedByAuthor,
   updateById,
   deleteById,
   updateAuthorPseudonym,
