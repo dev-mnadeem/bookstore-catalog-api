@@ -13,12 +13,15 @@ const XML_ROOT = 'response';
  * the request's own Content-Type is the primary signal. An explicit `Accept`
  * header still wins when the client sends one, because that is what every HTTP
  * client actually expects; JSON is the default when neither says anything.
+ *
+ * `req.accepts` weighs q-values, so `application/json, application/xml;q=0.5`
+ * gets JSON. A substring test would see "application/xml" and pick XML.
  */
 function resolveResponseType(req) {
   const accept = req.get('accept');
   if (accept && accept !== '*/*') {
-    if (XML_TYPES.some((type) => accept.includes(type))) return 'xml';
-    if (accept.includes(JSON_TYPE)) return 'json';
+    const preferred = req.accepts([JSON_TYPE, ...XML_TYPES]);
+    if (preferred) return XML_TYPES.includes(preferred) ? 'xml' : 'json';
   }
 
   const contentType = req.get('content-type');

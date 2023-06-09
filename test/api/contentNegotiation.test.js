@@ -63,3 +63,14 @@ describe('content negotiation', () => {
     expect(response.text).toContain('<status>404</status>');
   });
 });
+
+describe('content negotiation with weighted Accept headers', () => {
+  it('serves JSON when the client prefers it over XML', async () => {
+    const response = await request(app)
+      .get('/api/books')
+      .set('Accept', 'application/json, application/xml;q=0.5')
+      .expect(200);
+
+    expect(response.headers['content-type']).toMatch(/application\/json/);
+  });
+});
