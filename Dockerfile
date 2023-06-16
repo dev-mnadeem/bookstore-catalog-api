@@ -1,14 +1,14 @@
 # syntax=docker/dockerfile:1
 
 # ---------- dependencies ----------
-FROM node:20-alpine AS deps
+FROM node:22-alpine AS deps
 WORKDIR /app
 COPY package.json package-lock.json ./
 # `npm ci` from the lockfile keeps the image reproducible.
 RUN npm ci --omit=dev
 
 # ---------- runtime ----------
-FROM node:20-alpine AS runtime
+FROM node:22-alpine AS runtime
 ENV NODE_ENV=production \
     ENVIRONMENT=production \
     SERVER_PORT=3000

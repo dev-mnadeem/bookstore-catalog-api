@@ -229,7 +229,7 @@ leak a query or a path.
 
 ## Containers
 
-A multi-stage `Dockerfile` (`node:20-alpine`, `npm ci --omit=dev`, non-root `node` user, and
+A multi-stage `Dockerfile` (`node:22-alpine`, `npm ci --omit=dev`, non-root `node` user, and
 `CMD ["node", "server.js"]` so node is PID 1 and SIGTERM reaches the graceful shutdown) and a
 `docker-compose.yml` pairing it with `mongo:7` behind a `service_healthy` gate are in the repo.
 
