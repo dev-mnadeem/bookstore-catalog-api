@@ -257,3 +257,7 @@ without it.
   account *does* kill its tokens, because `config/passport.js` treats the payload as a claim
   and re-reads the account named by `sub` on every authenticated request.
 - **One process.** No clustering, no queue, no cache. At this size none earns its complexity.
+
+## Author
+
+[**Muhammad Nadeem**](https://github.com/dev-mnadeem)
