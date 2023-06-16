@@ -1,0 +1,32 @@
+services:
+  api:
+    build: .
+    image: wookie-books-api
+    restart: unless-stopped
+    ports:
+      - '${SERVER_PORT:-3000}:3000'
+    environment:
+      ENVIRONMENT: production
+      SERVER_PORT: 3000
+      DATABASE_URL: mongodb://mongo:27017/wookie-books
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY:?set JWT_SECRET_KEY in your .env before starting}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-1h}
+      PAGE_SIZE_MAX: ${PAGE_SIZE_MAX:-100}
+    depends_on:
+      mongo:
+        condition: service_healthy
+
+  mongo:
+    image: mongo:7
+    restart: unless-stopped
+    volumes:
+      - mongo-data:/data/db
+    healthcheck:
+      test: ['CMD', 'mongosh', '--quiet', '--eval', "db.adminCommand('ping').ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+volumes:
+  mongo-data:
